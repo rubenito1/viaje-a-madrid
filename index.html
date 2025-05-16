@@ -82,38 +82,45 @@
       margin-top: 10px;
     }
 
-    .art-section {
+    .carousel {
       margin: 60px auto;
       max-width: 700px;
+      position: relative;
     }
 
-    .art-section img {
+    .carousel img {
       width: 100%;
       border-radius: 15px;
       box-shadow: 0 0 20px rgba(0,0,0,0.4);
+      display: none;
     }
 
-    .art-caption {
-      margin-top: 15px;
+    .carousel img.active {
+      display: block;
+    }
+
+    .carousel-controls {
+      margin-top: 10px;
+    }
+
+    .carousel-controls button {
+      background-color: #ffffff22;
+      border: none;
+      color: white;
       font-size: 1.2rem;
+      padding: 10px 20px;
+      margin: 0 10px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .carousel-caption {
+      margin-top: 10px;
+      font-size: 1.1rem;
     }
   </style>
 </head>
 <body>
-
-  <h1>🎮 Minijuego: ¿Cuánto sabes del Museo del Prado?</h1>
-  <div id="quiz-container">
-    <p id="question">Cargando pregunta...</p>
-    <div id="answers"></div>
-    <p id="result"></p>
-    <button onclick="nextQuestion()">Siguiente</button>
-  </div>
-
-  <div class="art-section">
-    <h2>🖼️ Obra destacada del Museo del Prado</h2>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Las_Meninas_01.jpg/800px-Las_Meninas_01.jpg" alt="Las Meninas de Velázquez">
-    <div class="art-caption"><strong>Las Meninas</strong> – Diego Velázquez (1656)</div>
-  </div>
 
   <h1>🕒 Cuenta Regresiva para el Gran Viaje</h1>
   <h2>CEIP Mariano Aroca - 6º Curso</h2>
@@ -124,6 +131,26 @@
     Hora española (UTC+2). ¡Qué emoción!
   </footer>
 
+  <h1>🎮 Minijuego: ¿Cuánto sabes del Museo del Prado?</h1>
+  <div id="quiz-container">
+    <p id="question">Cargando pregunta...</p>
+    <div id="answers"></div>
+    <p id="result"></p>
+    <button onclick="nextQuestion()">Siguiente</button>
+  </div>
+
+  <h1>🖼️ Carrusel de Obras del Museo del Prado</h1>
+  <div class="carousel">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Las_Meninas_01.jpg/800px-Las_Meninas_01.jpg" class="active" alt="Las Meninas">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/El_3_de_mayo_de_1808_en_Madrid.jpg/800px-El_3_de_mayo_de_1808_en_Madrid.jpg" alt="El 3 de mayo de 1808">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Jer%C3%B3nimo_Bosch_023.jpg/800px-Jer%C3%B3nimo_Bosch_023.jpg" alt="El Jardín de las Delicias">
+    <div class="carousel-caption" id="carousel-caption">Las Meninas – Diego Velázquez</div>
+    <div class="carousel-controls">
+      <button onclick="changeSlide(-1)">⏪</button>
+      <button onclick="changeSlide(1)">⏩</button>
+    </div>
+  </div>
+
   <script>
     // Contador
     function updateCountdown() {
@@ -131,7 +158,7 @@
       const nowUTC = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
       const currentMonth = now.getMonth();
       const currentYear = now.getFullYear();
-      let targetDate = new Date(Date.UTC(currentYear, currentMonth, 20, 5, 0, 0)); // 7 AM en España = 5 UTC
+      let targetDate = new Date(Date.UTC(currentYear, currentMonth, 20, 5, 0, 0));
 
       if (nowUTC > targetDate) {
         targetDate = new Date(Date.UTC(currentYear, currentMonth + 1, 20, 5, 0, 0));
@@ -164,7 +191,7 @@
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // Quiz
+    // Minijuego
     const quiz = [
       {
         question: "¿Quién pintó 'Las Meninas'?",
@@ -177,9 +204,19 @@
         correct: 0
       },
       {
-        question: "¿Qué otro pintor famoso tiene obras en el Prado?",
+        question: "¿Qué otro pintor tiene muchas obras en el Prado?",
         answers: ["Dalí", "Goya", "Miró", "Zuloaga"],
         correct: 1
+      },
+      {
+        question: "¿Cómo se llama esta obra: un fusilamiento de noche con soldados y farol?",
+        answers: ["La rendición de Breda", "El 3 de mayo de 1808", "El Guernica", "Los fusilamientos"],
+        correct: 1
+      },
+      {
+        question: "¿Cuál de estos cuadros está pintado por El Bosco?",
+        answers: ["El Jardín de las Delicias", "Saturno devorando a su hijo", "El Quitasol", "La maja vestida"],
+        correct: 0
       }
     ];
 
@@ -217,7 +254,29 @@
     }
 
     loadQuestion();
-  </script>
 
+    // Carrusel
+    const images = document.querySelectorAll('.carousel img');
+    const captions = [
+      "Las Meninas – Diego Velázquez",
+      "El 3 de mayo de 1808 – Francisco de Goya",
+      "El Jardín de las Delicias – El Bosco"
+    ];
+    let currentSlide = 0;
+
+    function showSlide(index) {
+      images[currentSlide].classList.remove('active');
+      currentSlide = (index + images.length) % images.length;
+      images[currentSlide].classList.add('active');
+      document.getElementById("carousel-caption").textContent = captions[currentSlide];
+    }
+
+    function changeSlide(n) {
+      showSlide(currentSlide + n);
+    }
+
+    setInterval(() => changeSlide(1), 8000); // Carrusel automático
+
+  </script>
 </body>
 </html>
