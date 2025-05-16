@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>¡Cuenta Regresiva a Madrid!</title>
+  <title>¡Viaje a Madrid - CEIP Mariano Aroca!</title>
   <style>
     body {
       margin: 0;
@@ -11,36 +11,32 @@
       background: linear-gradient(to right, #1e3c72, #2a5298);
       color: white;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
       text-align: center;
     }
 
     h1 {
       font-size: 3rem;
-      margin-bottom: 10px;
+      margin-top: 30px;
       text-shadow: 2px 2px 10px rgba(0,0,0,0.4);
     }
 
     h2 {
       font-size: 1.5rem;
-      margin-bottom: 30px;
       color: #ffeb3b;
-      text-shadow: 1px 1px 5px rgba(0,0,0,0.4);
+      margin-bottom: 30px;
     }
 
     #countdown {
       font-size: 2.5rem;
       font-weight: bold;
+      margin: 30px auto;
       padding: 20px;
       border: 4px solid #00ffcc;
       border-radius: 20px;
       background-color: rgba(0, 0, 0, 0.3);
-      transition: all 0.5s ease;
+      width: fit-content;
       box-shadow: 0 0 30px #00ffcc;
+      transition: all 0.5s ease;
     }
 
     #countdown.red {
@@ -54,6 +50,53 @@
       font-size: 0.9rem;
       opacity: 0.7;
     }
+
+    #quiz-container {
+      max-width: 600px;
+      margin: 50px auto;
+      text-align: left;
+      background-color: rgba(255,255,255,0.05);
+      padding: 20px;
+      border-radius: 15px;
+    }
+
+    #quiz-container button {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      width: 100%;
+      background-color: #2196f3;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    #quiz-container button:hover {
+      background-color: #1976d2;
+    }
+
+    #result {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .art-section {
+      margin: 60px auto;
+      max-width: 700px;
+    }
+
+    .art-section img {
+      width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+
+    .art-caption {
+      margin-top: 15px;
+      font-size: 1.2rem;
+    }
   </style>
 </head>
 <body>
@@ -64,20 +107,31 @@
 
   <footer>
     🚍 ¡Nos vamos el día 20 a las 7:00 AM!<br/>
-    Hora basada en tu dispositivo (Hora española = UTC+2)<br/>
-    Creado por Rubén de 6ºA
+    Hora española (UTC+2). ¡Qué emoción!
   </footer>
+
+  <div class="art-section">
+    <h2>🖼️ Obra destacada del Museo del Prado</h2>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Las_Meninas_01.jpg/800px-Las_Meninas_01.jpg" alt="Las Meninas de Velázquez">
+    <div class="art-caption"><strong>Las Meninas</strong> – Diego Velázquez (1656)</div>
+  </div>
+
+  <div id="quiz-container">
+    <h2>🎮 Minijuego: ¿Cuánto sabes del Museo del Prado?</h2>
+    <p id="question">Cargando pregunta...</p>
+    <div id="answers"></div>
+    <p id="result"></p>
+    <button onclick="nextQuestion()">Siguiente</button>
+  </div>
 
   <script>
     function updateCountdown() {
       const now = new Date();
       const nowUTC = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
-
       const currentMonth = now.getMonth();
       const currentYear = now.getFullYear();
 
-      let targetDate = new Date(Date.UTC(currentYear, currentMonth, 20, 5, 0, 0)); // 7:00 AM hora española = 5:00 UTC
-
+      let targetDate = new Date(Date.UTC(currentYear, currentMonth, 20, 5, 0, 0));
       if (nowUTC > targetDate) {
         targetDate = new Date(Date.UTC(currentYear, currentMonth + 1, 20, 5, 0, 0));
       }
@@ -106,10 +160,62 @@
       }
     }
 
-    updateCountdown();
     setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    const quiz = [
+      {
+        question: "¿En qué ciudad está el Museo del Prado?",
+        answers: ["Sevilla", "Madrid", "Barcelona", "Granada"],
+        correct: 1
+      },
+      {
+        question: "¿Quién pintó 'Las Meninas'?",
+        answers: ["Goya", "Velázquez", "Picasso", "Sorolla"],
+        correct: 1
+      },
+      {
+        question: "¿Qué estilo artístico se encuentra mucho en el Prado?",
+        answers: ["Cubismo", "Barroco", "Pop Art", "Futurismo"],
+        correct: 1
+      }
+    ];
+
+    let current = 0;
+
+    function loadQuestion() {
+      const q = quiz[current];
+      document.getElementById("question").textContent = q.question;
+      const answersDiv = document.getElementById("answers");
+      answersDiv.innerHTML = "";
+      q.answers.forEach((answer, i) => {
+        const btn = document.createElement("button");
+        btn.textContent = answer;
+        btn.onclick = () => checkAnswer(i);
+        answersDiv.appendChild(btn);
+      });
+      document.getElementById("result").textContent = "";
+    }
+
+    function checkAnswer(i) {
+      const correct = quiz[current].correct;
+      const resultEl = document.getElementById("result");
+      if (i === correct) {
+        resultEl.textContent = "✅ ¡Correcto!";
+        resultEl.style.color = "lightgreen";
+      } else {
+        resultEl.textContent = "❌ Incorrecto. Era: " + quiz[current].answers[correct];
+        resultEl.style.color = "salmon";
+      }
+    }
+
+    function nextQuestion() {
+      current = (current + 1) % quiz.length;
+      loadQuestion();
+    }
+
+    loadQuestion();
   </script>
 
 </body>
 </html>
-
