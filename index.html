@@ -122,16 +122,15 @@
 </head>
 <body>
 
-  <h1>🕒 Cuenta Regresiva para el Gran Viaje</h1>
+  <h1>Cuenta Regresiva para el Gran Viaje</h1>
   <h2>CEIP Mariano Aroca - 6º Curso</h2>
   <div id="countdown">Cargando cuenta atrás...</div>
 
   <footer>
-    🚍 ¡Nos vamos el día 20 a las 7:00 AM!<br/>
-    Hora española (UTC+2). ¡Qué emoción!
+    Salida el día 20 a las 7:00 AM (hora española). ¡Qué emoción!
   </footer>
 
-  <h1>🎮 Minijuego: ¿Cuánto sabes del Museo del Prado?</h1>
+  <h1>Minijuego: ¿Cuánto sabes del Museo del Prado?</h1>
   <div id="quiz-container">
     <p id="question">Cargando pregunta...</p>
     <div id="answers"></div>
@@ -139,11 +138,11 @@
     <button onclick="nextQuestion()">Siguiente</button>
   </div>
 
-  <h1>🖼️ Carrusel de Obras del Museo del Prado</h1>
+  <h1>Obras del Museo del Prado</h1>
   <div class="carousel">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Las_Meninas_01.jpg/800px-Las_Meninas_01.jpg" class="active" alt="Las Meninas">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/El_3_de_mayo_de_1808_en_Madrid.jpg/800px-El_3_de_mayo_de_1808_en_Madrid.jpg" alt="El 3 de mayo de 1808">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Jer%C3%B3nimo_Bosch_023.jpg/800px-Jer%C3%B3nimo_Bosch_023.jpg" alt="El Jardín de las Delicias">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/1/1c/Las_Meninas_01.jpg" class="active" alt="Las Meninas">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/El_Tres_de_Mayo%2C_by_Francisco_de_Goya%2C_from_Prado_in_Google_Earth.jpg" alt="El 3 de mayo de 1808">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/The_Garden_of_Earthly_Delights_by_Bosch_High_Resolution.jpg" alt="El Jardín de las Delicias">
     <div class="carousel-caption" id="carousel-caption">Las Meninas – Diego Velázquez</div>
     <div class="carousel-controls">
       <button onclick="changeSlide(-1)">⏪</button>
@@ -240,10 +239,10 @@
       const correct = quiz[current].correct;
       const resultEl = document.getElementById("result");
       if (i === correct) {
-        resultEl.textContent = "✅ ¡Correcto!";
+        resultEl.textContent = "Correcto";
         resultEl.style.color = "lightgreen";
       } else {
-        resultEl.textContent = "❌ Incorrecto. Era: " + quiz[current].answers[correct];
+        resultEl.textContent = "Incorrecto. Era: " + quiz[current].answers[correct];
         resultEl.style.color = "salmon";
       }
     }
@@ -275,8 +274,7 @@
       showSlide(currentSlide + n);
     }
 
-    setInterval(() => changeSlide(1), 8000); // Carrusel automático
-
+    setInterval(() => changeSlide(1), 8000);
   </script>
 </body>
 </html>
